@@ -1,0 +1,22 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Proyecto Final NextUI Backend",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MaryMoreira/Backend_Maritza_Moreira.git"
+  },
+  "keywords": [
+    "node"
+  ],
+  "author": "Maritza Moreira",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/MaryMoreira/Backend_Maritza_Moreira/issues"
+  },
+  "homepage": "https://github.com/MaryMoreira/Backend_Maritza_Moreira#readme"
+}
