@@ -27,6 +27,9 @@ class DataManager { // datos
             o._precio = parseInt( o.Precio.replace('$','').replace(',','') );
         });
 
+        this._ciudades.sort();
+        this._tipos.sort();
+
         console.log("ciudades :", this._ciudades);
         console.log("tipos :", this._tipos);
         //console.log("all :", this._data);
