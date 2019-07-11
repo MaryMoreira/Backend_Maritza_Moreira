@@ -1,6 +1,5 @@
 const express    = require('express');
 const router     = express.Router();
-const bodyParser = require('body-parser');
 const { getParams, getItems, getAllItems }  = require('./lib');
 
 
@@ -10,15 +9,9 @@ router.use(function timeLog(req, res, next) {
     next();
 });
 
-// pagina inicial
-router.get('/', function(req, res) {
-
-});
-
 // obtiene los parametros de la busqueda
 router.post('/params', (req, res) => {
-    let data = getParams();
-    res.send(data);
+    res.send(getParams()); // envia los parametros de busqueda
     res.end();
 });
 
@@ -26,10 +19,9 @@ router.post('/params', (req, res) => {
 router.post('/items', (req, res) => {
     let query = req.body;
     if(query.custom == 'true'){
-        res.send( getItems(query) );
+        res.send( getItems(query) ); // obtiene los items dependiendo el query enviado por el cliente
     }else{
-        console.log("todos los datos");
-        res.send( getAllItems() );
+        res.send( getAllItems() );   // obtiene todos los items
     }
     res.end();
 });

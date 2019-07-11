@@ -1,7 +1,6 @@
+/* Modulo que permite buscar propiedades solicitandolas al servidor mediante ajax*/
 
-var customSearch = false;
-
-//Inicializador del elemento Slider
+// inicializador del elemento Slider
 function initSlider(){
   $("#rangoPrecio").ionRangeSlider({
     type: "double",
@@ -14,21 +13,42 @@ function initSlider(){
   })
 }
 
-// setea la visibilidad de la busqueda
+// viusaliza o no la busqueda personalizada y captura el click al hacer una busqueda
 function setSearch() {
-  let busqueda = $('#checkPersonalizada')
-  let selectItems = $("select");
-  // atiende cuando cambia el valor del check
+  let busqueda     = $('#checkPersonalizada')
+  let selectItems  = $("select");
+  let customSearch = false;
+
+  // atiende cuando cambia el valor de la busqueda personalizada o no
   busqueda.on('change', (e) => {
-    if (customSearch == false) {
-      selectItems.css('display','inline');
-      this.customSearch = true
-    } else {
+    if (customSearch) {
       selectItems.css('display','node');
       customSearch = false
+    } else {
+      selectItems.css('display','inline');
+      customSearch = true
     }
     $('#personalizada').toggleClass('invisible')
   })
+
+  // atiende al boton buscar (si se da click en el boton)
+  $('#buscar').click( (e) => {
+    let query;
+    // obtiene el query a enviar al servidor
+    if(customSearch){
+      query = { custom: true,
+                ciudad: $('#ciudad').val(),
+                tipo: $('#tipo').val(),
+                precio: $('#rangoPrecio').val() };
+    }else{
+      query = { custom: false }; // todos los items
+    }
+
+    // envia la solicitud de los items(propiedades)
+    sendRequest('/items', query, (dataRes) => {
+      renderPropiedades(dataRes); // renderiza los datos de las propiedades
+    })
+  });
 }
 
 // funcion que envia la peticion al servidor mediante ajax
@@ -60,14 +80,14 @@ function renderCiudades(ciudades){
   ciudades.forEach( o =>  htmlCiudades.append(`<option value="${o}">${o}</option>`) );
 }
 
-// coloca llos tipos  obtenidos del servidor
+// coloca los tipos  obtenidos del servidor
 function renderTipos(tipos){
   let htmlTipos = $('#tipo');
   tipos.forEach( o =>  htmlTipos.append(`<option value="${o}">${o}</option>`) );
 }
 
-// coloca los items obtenidos en la busqueda
-function renderItemsResponse(data){
+// coloca las propiedades obtenidas en la busqueda
+function renderPropiedades(data){
   let items = [];
   let listaItems = $('.lista');
 
@@ -119,27 +139,6 @@ function init(){
   setSearch();
   getSearchParams();
 }
-
-
-// si se da click en el boton
-$('#buscar').click( (e) => {
-  let query;
-  // obtiene el query a enviar al servidor
-  if(customSearch){
-    query = { custom: true,
-              ciudad: $('#ciudad').val(),
-              tipo: $('#tipo').val(),
-              precio: $('#rangoPrecio').val() };
-  }else{
-    query = { custom: false };
-  }
-
-  // envia la solicitud de los items
-  sendRequest('/items', query, (dataRes) => {
-      renderItemsResponse(dataRes); // renderiza los datos
-  })
-});
-
 
 // inicializa el ambiente
 init();
