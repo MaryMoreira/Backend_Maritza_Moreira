@@ -49,7 +49,13 @@ module.exports = {
         }
     },
 
-    getItems : (req) => {
+    getAllItems : () => {
+        return {
+            items : DM._data
+        }
+    },
+
+    getItems : (query) => {
 
     }
 }

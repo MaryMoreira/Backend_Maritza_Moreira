@@ -1,7 +1,7 @@
 const express    = require('express');
 const router     = express.Router();
 const bodyParser = require('body-parser');
-const { getParams, getItems }  = require('./lib');
+const { getParams, getItems, getAllItems }  = require('./lib');
 
 
 // middleware that is specific la solicitud del cliente
@@ -12,8 +12,7 @@ router.use(function timeLog(req, res, next) {
 
 // pagina inicial
 router.get('/', function(req, res) {
-    res.sendFile('im the home page!');
-    res.end();
+
 });
 
 // obtiene los parametros de la busqueda
@@ -25,8 +24,14 @@ router.post('/params', (req, res) => {
 
 // obtiene los items de la busqueda
 router.post('/items', (req, res) => {
-    let data = getItems(req.data);
-    console.log("items"), req;
+    let query = req.body;
+    if(query.custom == 'true'){
+        res.send( getItems(query) );
+    }else{
+        console.log("todos los datos");
+        res.send( getAllItems() );
+    }
+    res.end();
 });
 
 module.exports = router;
